@@ -10,7 +10,7 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 		'1' => array('showitem' => '--div--;LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.episodes,episodes,
 									--div--;LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.tab.description,title,subtitle,description,publication_date,tstamp,image,
 									--div--;LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.tab.itunes,categories,keywords,itunes;;2;;,
-									--div--;LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.tab.contact,author;;3;;,copyright')
+									--div--;LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.tab.contact,technical_contact,website,author;;3;;,copyright')
 	), 
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -23,6 +23,7 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
@@ -40,17 +41,18 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 				'eval' => 'date',
 			)
 		),
-		'l18n_parent' => array(
+		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l10n_parent',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0),
 				),
 				'foreign_table' => 'tx_podcast_domain_model_podcast',
-				'foreign_table_where' => 'AND tx_podcast_domain_model_podcast.uid=###REC_FIELD_l18n_parent### AND tx_podcast_domain_model_podcast.sys_language_uid IN (-1,0)',
+				'foreign_table_where' => 'AND tx_podcast_domain_model_podcast.uid=###REC_FIELD_l10n_parent### AND tx_podcast_domain_model_podcast.sys_language_uid IN (-1,0)',
 			)
 		),
 		'l18n_diffsource' => array(
@@ -142,6 +144,7 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 			'label'	  => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.episodes',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingleBox',
 				'foreign_table' => 'tx_podcast_domain_model_episode',
 				'foreign_table_where' => ' AND tx_podcast_domain_model_episode.sys_language_uid IN (-1,0) ORDER BY tx_podcast_domain_model_episode.publication_date DESC',
 				'MM' => 'tx_podcast_podcast_episode_mm',
@@ -156,19 +159,19 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 					'add' => Array(
 						'type' => 'script',
 						'title' => 'Create new',
-						'icon' => 'add.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						'params' => array(
 							'table'=> 'tx_podcast_domain_model_episode',
 							'pid' => '###CURRENT_PID###',
 							'setValue' => 'prepend'
 							),
-						'script' => 'wizard_add.php',
+						'module'=>array('name'=>'wizard_add'),
 					),
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'Edit',
-						'script' => 'wizard_edit.php',
-						'icon' => 'edit2.gif',
+						'module'=>array('name'=>'wizard_edit'),
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 						),
@@ -181,6 +184,10 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 			'label' => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.categories',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectTree',
+				'items' => array(
+					array('', 0),
+					),
 				'renderMode' => 'tree',
 				'treeConfig' => array(
 					'childrenField' => 'subcategory',
@@ -204,22 +211,21 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'Edit',
-						'script' => 'wizard_edit.php',
-						'icon' => 'edit2.gif',
+						'module'=>array('name'=>'wizard_edit'),
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 						),
 					'add' => Array(
 						'type' => 'script',
 						'title' => 'Create new',
-						'icon' => 'add.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						'params' => array(
 							'table' => 'tx_podcast_domain_model_category',
 							'pid' => '###CURRENT_PID###',
 							'setValue' => 'prepend'
 							),
-						'script' => 'wizard_add.php',
-					),
+						'module'=>array('name'=>'wizard_add'),					),
 				),
 			),
 		),		  
@@ -228,6 +234,10 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 			'label'	  => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.author',
 			'config' => array(
 				'type' => 'select',	 
+				'renderType' => 'selectSingle',
+				'items' => array(
+					array('', 0),
+					),
 				//'renderMode' => 'checkbox',
 				'size' => 1,
 				'maxitems' => 1,
@@ -242,21 +252,21 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 					 'edit' => array(
 						 'type' => 'popup',
 						 'title' => 'Edit',
-						 'script' => 'wizard_edit.php',
-						 'icon' => 'edit2.gif',
+						 'module'=>array('name'=>'wizard_edit'),
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						 'popup_onlyOpenIfSelected' => 1,
 						 'JSopenParams' => 'height=645,width=645,status=0,menubar=0,scrollbars=1',
 					 ),
 					 'add' => array(
 						 'type' => 'script',
 						 'title' => 'Create New Author',
-						 'icon' => 'add.gif',
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						 'params' => array(
 							 'table'=>'tx_podcast_domain_model_person',
 							 'pid' => '###CURRENT_PID###',
 							 'setValue' => 'prepend'
 						 ),
-						 'script' => 'wizard_add.php',
+						 'module'=>array('name'=>'wizard_add'),
 					 ),
 				 ),
 			),
@@ -265,8 +275,9 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 			'exclude' => 0,
 			'label'	  => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.technical_contact',
 			'config' => array(
-				'type' => 'select',	 
-				'type' => 'select',	 
+				'type' => 'select',
+				'renderType' => 'selectSingle',
+				
 				//'renderMode' => 'checkbox',
 				'size' => 1,
 				'maxitems' => 1,
@@ -281,21 +292,21 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 					 'edit' => array(
 						 'type' => 'popup',
 						 'title' => 'Edit',
-						 'script' => 'wizard_edit.php',
-						 'icon' => 'edit2.gif',
+						 'module'=>array('name'=>'wizard_edit'),
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						 'popup_onlyOpenIfSelected' => 1,
 						 'JSopenParams' => 'height=645,width=645,status=0,menubar=0,scrollbars=1',
 					 ),
 					 'add' => array(
 						 'type' => 'script',
 						 'title' => 'Create New Technical Contact',
-						 'icon' => 'add.gif',
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						 'params' => array(
 							 'table'=>'tx_podcast_domain_model_person',
 							 'pid' => '###CURRENT_PID###',
 							 'setValue' => 'prepend'
 						 ),
-						 'script' => 'wizard_add.php',
+						 'module'=>array('name'=>'wizard_add'),
 					 ),
 				 ),
 			),
@@ -305,6 +316,7 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 			'label'	  => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.website',
 			'config' => array(
 				'type' => 'select',	 
+				'renderType' => 'selectSingle',
 				//'renderMode' => 'checkbox',
 				'size' => 1,
 				'maxitems' => 1,
@@ -318,21 +330,21 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 					 'edit' => array(
 						 'type' => 'popup',
 						 'title' => 'Edit',
-						 'script' => 'wizard_edit.php',
-						 'icon' => 'edit2.gif',
+						 'module'=>array('name'=>'wizard_edit'),
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						 'popup_onlyOpenIfSelected' => 1,
 						 'JSopenParams' => 'height=650,width=650,status=0,menubar=0,scrollbars=1',
 					 ),
 					 'add' => array(
 						 'type' => 'script',
 						 'title' => 'Create New Website',
-						 'icon' => 'add.gif',
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						 'params' => array(
 							 'table'=>'tx_podcast_domain_model_website',
 							 'pid' => '###CURRENT_PID###',
 							 'setValue' => 'prepend'
 						 ),
-						 'script' => 'wizard_add.php',
+						 'module'=>array('name'=>'wizard_add'),
 					 ),
 				 ),
 			),
@@ -342,6 +354,7 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 			'label' => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.keywords',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingleBox',
 				'foreign_table' => 'tx_podcast_domain_model_keyword',
 				"foreign_table_where" => " AND sys_language_uid=###REC_FIELD_sys_language_uid### ORDER BY tx_podcast_domain_model_keyword.title",
 				'MM' => 'tx_podcast_podcast_keyword_mm',
@@ -357,7 +370,7 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 					/*'edit' => array(
 						'type' => 'popup',
 						'title' => 'Edit',
-						'script' => 'wizard_edit.php',
+						'module'=>array('name'=>'wizard_edit'),
 						'icon' => 'edit2.gif',
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
@@ -365,13 +378,13 @@ $TCA['tx_podcast_domain_model_podcast'] = array(
 					'add' => Array(
 						'type' => 'script',
 						'title' => 'Create new',
-						'icon' => 'add.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						'params' => array(
 							'table' => 'tx_podcast_domain_model_keyword',
 							'pid' => '###CURRENT_PID###',
 							'setValue' => 'prepend'
 							),
-						'script' => 'wizard_add.php',
+						'module'=>array('name'=>'wizard_add'),
 					),
 				),
 			),

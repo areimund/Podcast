@@ -27,7 +27,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEntity {
+class Episode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * Title
@@ -106,7 +106,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * website
 	 *
-	 * @var Tx_Podcast_Domain_Model_Website
+	 * @var Website
 	 */
 	protected $website;
 
@@ -120,7 +120,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * keywords
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Podcast_Domain_Model_Keyword>
+	 * @var Keywords
 	 */
 	protected $keywords;
 
@@ -145,7 +145,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->keywords = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->keywords = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -230,7 +230,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return string $file
 	 */
 	public function getFile() {
-		if(t3lib_div::isFirstPartOfStr($this->file, 'file:')){
+		if(\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->file, 'file:')){
 			// this helped; https://github.com/TYPO3/TYPO3v4-Core/blob/master/typo3/sysext/frontend/Classes/ContentObject/FilesContentObject.php
 			// Get the UID from the current image object. 
 			$fileUid = substr($this->file, 5);
@@ -249,7 +249,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return string $file
 	 */
 	public function getFileurl() {
-		return t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getFile();
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').$this->getFile();
 	}
 
 
@@ -345,7 +345,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	 */
 	private function getFileMime($file) {
 		$mime = '';
-		$file = t3lib_div::getFileAbsFileName($file);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($file);
 		if ($fp = fopen($file, 'rb')) {
 			//This will set the Content-Type to the appropriate setting for the file 
 			$fileinfo = pathinfo($file);
@@ -375,7 +375,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	 */
 	private function getFileDuration($file) {
 		$duration = 0;
-		$file = t3lib_div::getFileAbsFileName($file);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($file);
 		if ($fp = fopen($file, 'rb')) {
 			require_once('typo3conf/ext/podcast/Classes/Utilities/getid3/getid3.php');
 
@@ -423,7 +423,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return void
 	 */
 	public function setAltfiles() {
-		$fileInfo = t3lib_div::split_fileref($this->getFile());
+		$fileInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($this->getFile());
 
 		/* get mime and duration from provided file */
 		$this->setMime($this->getFileMime($this->getFile()));
@@ -446,7 +446,7 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Returns the website
 	 *
-	 * @return Tx_Podcast_Domain_Model_Website $website
+	 * @return  $website
 	 */
 	public function getWebsite() {
 		return $this->website;
@@ -455,17 +455,17 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Sets the website
 	 *
-	 * @param Tx_Podcast_Domain_Model_Website $website
+	 * @param  $website
 	 * @return void
 	 */
-	public function setWebsite(Tx_Podcast_Domain_Model_Website $website) {
+	public function setWebsite($website) {
 		$this->website = $website;
 	}
 
 	/**
 	 * Returns the author
 	 *
-	 * @return Tx_Podcast_Domain_Model_Person $author
+	 * @return $author
 	 */
 	public function getAuthor() {
 		return $this->author;
@@ -474,10 +474,10 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Sets the author
 	 *
-	 * @param Tx_Podcast_Domain_Model_Person $author
+	 * @param  $author
 	 * @return void
 	 */
-	public function setAuthor(Tx_Podcast_Domain_Model_Person $author) {
+	public function setAuthor( $author) {
 		$this->author = $author;
 	}
               
@@ -485,27 +485,27 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Adds a Keyword
 	 *
-	 * @param Tx_Podcast_Domain_Model_Keyword $keyword
+	 * @param  $keyword
 	 * @return void
 	 */
-	public function addKeyword(Tx_Podcast_Domain_Model_Keyword $keyword) {
+	public function addKeyword( $keyword) {
 		$this->keywords->attach($keyword);
 	}
 
 	/**
 	 * Removes a Keyword
 	 *
-	 * @param Tx_Podcast_Domain_Model_Keyword $keywordToRemove The Keyword to be removed
+	 * @param  $keywordToRemove The Keyword to be removed
 	 * @return void
 	 */
-	public function removeKeyword(Tx_Podcast_Domain_Model_Keyword $keywordToRemove) {
+	public function removeKeyword( $keywordToRemove) {
 		$this->keywords->detach($keywordToRemove);
 	}
 
 	/**
 	 * Returns the keywords
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Podcast_Domain_Model_Keyword> $keywords
+	 * @return string $keywords
 	 */
 	public function getKeywords() {
 		return $this->keywords;
@@ -514,10 +514,10 @@ class Tx_Podcast_Domain_Model_Episode extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Sets the keywords
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Podcast_Domain_Model_Keyword> $keywords
+	 * @param $keywords
 	 * @return void
 	 */
-	public function setKeywords(Tx_Extbase_Persistence_ObjectStorage $keywords) {
+	public function setKeywords($keywords) {
 		$this->keywords = $keywords;
 	}
 }

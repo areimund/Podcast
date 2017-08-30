@@ -20,6 +20,7 @@ $TCA['tx_podcast_domain_model_website'] = array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
@@ -115,8 +116,8 @@ $TCA['tx_podcast_domain_model_website'] = array(
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_website.link',
-						'icon' => 'link_popup.gif',
-						'script' => 'browse_links.php?mode=wizard',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+						'module' =>array('name'=>'wizard_link','mode'=>'wizard'),
 						'params' => array(
 							'blindLinkOptions' => 'mail, page, spec, folder',
 							'allowedExtensions' => 'mp3,m4a,mp4,pdf,mov,wmv',

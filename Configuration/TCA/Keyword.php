@@ -14,12 +14,13 @@ $TCA['tx_podcast_domain_model_keyword'] = array(
 	'palettes' => array(
 		'1' => array('showitem' => ''),
 	),
-	'columns' => array(
+'columns' => array(
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(

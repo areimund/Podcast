@@ -27,22 +27,22 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Podcast_Controller_PodcastController extends Tx_Extbase_MVC_Controller_ActionController {
+class PodcastController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * podcastRepository
 	 *
-	 * @var Tx_Podcast_Domain_Repository_PodcastRepository
+	 * @var PodcastRepository
 	 */
 	protected $podcastRepository;
 
 	/**
 	 * injectPodcastRepository
 	 *
-	 * @param Tx_Podcast_Domain_Repository_PodcastRepository $podcastRepository
+	 * @param  $podcastRepository
 	 * @return void
 	 */
-	public function injectPodcastRepository(Tx_Podcast_Domain_Repository_PodcastRepository $podcastRepository) {
+	public function injectPodcastRepository($podcastRepository) {
 		$this->podcastRepository = $podcastRepository;
 	}
 
@@ -70,7 +70,7 @@ class Tx_Podcast_Controller_PodcastController extends Tx_Extbase_MVC_Controller_
 	 * @param $podcast
 	 * @return void
 	 */
-	public function showAction(Tx_Podcast_Domain_Model_Podcast $podcast = NULL) {
+	public function showAction( $podcast = NULL) {
 		if(!$podcast && intval($this->settings['singlePodcast']) > 0){
 			$this->settings['noBackButton'] = 1;
 			$podcast = $this->podcastRepository->findOneByUid(intval($this->settings['singlePodcast']));
@@ -95,10 +95,10 @@ class Tx_Podcast_Controller_PodcastController extends Tx_Extbase_MVC_Controller_
 	/**
 	 * Updates podcast duration
 	 *
-	 * @param $podcast Tx_Podcast_Domain_Model_Podcast
+	 * @param $podcast
 	 * @return void
 	 */
-	private function updatePodcast(Tx_Podcast_Domain_Model_Podcast $podcast){
+	private function updatePodcast($podcast){
 		$change = false;
 		foreach ($podcast->getEpisodes() as $episode) {
 			if($episode->getDuration() < 1){
@@ -107,7 +107,7 @@ class Tx_Podcast_Controller_PodcastController extends Tx_Extbase_MVC_Controller_
 			}
 		}
 		if($change){
-			$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
+			$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
 			$persistenceManager->persistAll();
 		}
 	}

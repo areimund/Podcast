@@ -1,6 +1,6 @@
 <?php
 
-class Tx_Podcast_Utilities_EpisodePostProcessor {
+class EpisodePostProcessor {
 	function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference) {
 		
 		if ($status == 'update' && $table == 'tx_podcast_domain_model_episode') {

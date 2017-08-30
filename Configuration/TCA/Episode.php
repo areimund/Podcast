@@ -29,17 +29,17 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 				)
 			)
 		),
-		'l18n_parent' => array(
+		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l0n_parent',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
 					array('', 0),
 				),
 				'foreign_table' => 'tx_podcast_domain_model_episode',
-				'foreign_table_where' => 'AND tx_podcast_domain_model_episode.uid=###REC_FIELD_l18n_parent### AND tx_podcast_domain_model_episode.sys_language_uid IN (-1,0)',
+				'foreign_table_where' => 'AND tx_podcast_domain_model_episode.uid=###REC_FIELD_l10n_parent### AND tx_podcast_domain_model_episode.sys_language_uid IN (-1,0)',
 			)
 		),
 		'l18n_diffsource' => array(
@@ -124,8 +124,8 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_episode.file',
-						'icon' => 'link_popup.gif',
-						'script' => 'browse_links.php?mode=wizard',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+						'module' => array('name'=>'wizard_link', 'mode'=>'wizard'),
 						'params' => array(
 							'blindLinkOptions' => 'mail, page, spec, folder',
 							'allowedExtensions' => 'mp3,m4a,mp4,pdf,mov,wmv',
@@ -166,10 +166,12 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 			'exclude' => 0,
 			'label'	  => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_episode.website',
 			'config' => array(
-				'type' => 'select',	 
+			'renderType' => 'selectSingleBox',
+				'type' => 'select',
 				'size' => 2,
 				'autoSizeMax' => 3,
 				'maxitems' => 1,
+				'default' => '',
 				//'renderMode' => 'checkbox',
 				'foreign_table' => 'tx_podcast_domain_model_website',
 				'foreign_table_where' => 'AND tx_podcast_domain_model_website.pid=###CURRENT_PID###',
@@ -180,21 +182,21 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 					 'edit' => array(
 						 'type' => 'popup',
 						 'title' => 'Edit',
-						 'script' => 'wizard_edit.php',
-						 'icon' => 'edit2.gif',
+						 'module'=>array('name'=>'wizard_edit'),
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						 'popup_onlyOpenIfSelected' => 1,
 						 'JSopenParams' => 'height=650,width=650,status=0,menubar=0,scrollbars=1',
 					 ),
 					 'add' => array(
 						 'type' => 'script',
 						 'title' => 'Create New Website',
-						 'icon' => 'add.gif',
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						 'params' => array(
 							 'table'=>'tx_podcast_domain_model_website',
 							 'pid' => '###CURRENT_PID###',
 							 'setValue' => 'prepend'
 						 ),
-						 'script' => 'wizard_add.php',
+						 'module'=>array('name'=>'wizard_add'),
 					 ),
 				 ),
 			),
@@ -204,8 +206,10 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 			'label'	  => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_episode.author',
 			'config' => array(
 				'type' => 'select',	 
+				 'renderType' => 'selectSingleBox', 
 				'size' => 2,
 				'autoSizeMax' => 3,
+				'maxitems' => 1,
 				'foreign_table' => 'tx_podcast_domain_model_person',
 				'foreign_table_where' => 'AND tx_podcast_domain_model_person.pid=###CURRENT_PID###',
 				/*'items' => array(
@@ -218,21 +222,21 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 					 'edit' => array(
 						 'type' => 'popup',
 						 'title' => 'Edit',
-						 'script' => 'wizard_edit.php',
-						 'icon' => 'edit2.gif',
+						 'module'=>array('name'=>'wizard_edit'),
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						 'popup_onlyOpenIfSelected' => 1,
 						 'JSopenParams' => 'height=650,width=650,status=0,menubar=0,scrollbars=1',
 					 ),
 					 'add' => array(
 						 'type' => 'script',
 						 'title' => 'Create New Author',
-						 'icon' => 'add.gif',
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						 'params' => array(
 							 'table'=>'tx_podcast_domain_model_person',
 							 'pid' => '###CURRENT_PID###',
 							 'setValue' => 'prepend'
 						 ),
-						 'script' => 'wizard_add.php',
+						 'module'=>array('name'=>'wizard_add'),
 					 ),
 				 ),
 			),
@@ -242,6 +246,7 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 			'label' => 'LLL:EXT:podcast/Resources/Private/Language/locallang_db.xml:tx_podcast_domain_model_podcast.keywords',
 			'config' => array(
 				'type' => 'select',
+				 'renderType' => 'selectMultipleSideBySide', 
 				'foreign_table' => 'tx_podcast_domain_model_keyword',
 				'MM' => 'tx_podcast_episode_keyword_mm',
 				'renderMode' => 'checkbox',
@@ -249,6 +254,7 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 				'autoSizeMax' => 30,
 				'maxitems' => 9999,
 				'multiple' => 0,
+				'default'=>0,
 				'wizards' => array(
 					 '_POSITION' => 'right',
 					 '_PADDING' => 1,
@@ -256,7 +262,7 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 					/*'edit' => array(
 						'type' => 'popup',
 						'title' => 'Edit',
-						'script' => 'wizard_edit.php',
+						'module'=>array('name'=>'wizard_add'),
 						'icon' => 'edit2.gif',
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
@@ -264,13 +270,14 @@ $TCA['tx_podcast_domain_model_episode'] = array(
 					'add' => Array(
 						'type' => 'script',
 						'title' => 'Create new',
-						'icon' => 'add.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+						 'module'=>array('name'=>'wizard_add'),
 						'params' => array(
 							'table' => 'tx_podcast_domain_model_keyword',
 							'pid' => '###CURRENT_PID###',
 							'setValue' => 'prepend'
 							),
-						'script' => 'wizard_add.php',
+						
 					),
 				),
 			),

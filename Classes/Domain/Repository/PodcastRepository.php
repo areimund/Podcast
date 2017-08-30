@@ -27,7 +27,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Podcast_Domain_Repository_PodcastRepository extends Tx_Extbase_Persistence_Repository {
+class PodcastRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	protected $defaultOrderings = array(
 		'sorting' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
 		'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING

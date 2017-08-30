@@ -17,21 +17,22 @@ $TCA['tx_podcast_domain_model_category'] = array(
 	'columns' => array(
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-				),
-			),
+					array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages',-1),
+					array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
+				)
+			)
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l10n_parent',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -122,7 +123,7 @@ $TCA['tx_podcast_domain_model_category'] = array(
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'Edit',
-						'script' => 'wizard_edit.php',
+						'module'=>array('name'=>'wizard_add'),
 						'icon' => 'edit2.gif',
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
